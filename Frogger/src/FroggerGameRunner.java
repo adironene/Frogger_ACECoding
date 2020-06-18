@@ -25,7 +25,7 @@ public class FroggerGameRunner {
 	
 	// Notice this intuitive method for finding the screen size 
 	public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	public static final int WIDTH = (int) (screenSize.getWidth()*3/4),HEIGHT=(int) (screenSize.getHeight()*3/4);
+	public static final int WIDTH = (int) (screenSize.getWidth()),HEIGHT=(int) (screenSize.getHeight());
 
 	public FroggerGameRunner() {
 		EventQueue.invokeLater(new Runnable() {
@@ -51,7 +51,7 @@ public class FroggerGameRunner {
 			@Override
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				drawGame(g);
+				drawGame(g, WIDTH, HEIGHT);
 			}
 		};
 		panel.setBackground(new Color(20, 15, 120));
@@ -81,6 +81,7 @@ public class FroggerGameRunner {
 		if(ticks %100 == 0) {
 			System.out.println(ticks/100+" seconds");
 		}
+
 		
 		
 	}
@@ -100,7 +101,7 @@ public class FroggerGameRunner {
 		// up key is hit
 		inMap.put(KeyStroke.getKeyStroke("pressed UP"), "up");
 		inMap.put(KeyStroke.getKeyStroke((char) KeyEvent.VK_UP), "up");
-		// code below associates the "up" action with anything in the 
+		// code below associates the "up" action with anything in the
 		// actionPerformed method.  Right now, it just prints something
 		map.put("up", new AbstractAction() {
 			@Override
@@ -108,8 +109,9 @@ public class FroggerGameRunner {
 				hit("up");
 			}
 
-			
+
 		});
+
 		panel.getInputMap().put(KeyStroke.getKeyStroke("LEFT"),"left");
 		panel.getActionMap().put("left",new AbstractAction(){
 
@@ -119,13 +121,31 @@ public class FroggerGameRunner {
 			}
 		});
 
+        panel.getInputMap().put(KeyStroke.getKeyStroke("RIGHT"),"right");
+        panel.getActionMap().put("right",new AbstractAction(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                hit("right");
+            }
+        });
+
+        panel.getInputMap().put(KeyStroke.getKeyStroke("DOWN"),"down");
+        panel.getActionMap().put("down",new AbstractAction(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                hit("down");
+            }
+        });
+
 	}
 	public  void hit(String s) {
 		game.keyHit(s);
 		panel.repaint();
 	}
-	protected void drawGame(Graphics g) {
-		// TODO Auto-generated method stub
+	protected void drawGame(Graphics g, int width, int height) {
+		game.draw(g,width,height);
 
 	}
 
