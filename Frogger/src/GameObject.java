@@ -38,6 +38,10 @@ public class GameObject {
 		return rect;
 	}
 
+	public boolean hit(Rectangle r){
+		return rect.intersects(r);
+	}
+
 	
 	
 }
