@@ -1,3 +1,5 @@
+import com.sun.nio.sctp.HandlerResult;
+
 import java.awt.*;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -19,14 +21,14 @@ import javax.swing.KeyStroke;
 
 public class FroggerGameRunner {
 	private JPanel panel;
-	private FroggerGame game = new FroggerGame();
+
 	private Timer timer;
 	private int ticks;
 	
 	// Notice this intuitive method for finding the screen size 
 	public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	public static final int WIDTH = (int) (screenSize.getWidth()),HEIGHT=(int) (screenSize.getHeight());
-
+	private FroggerGame game = new FroggerGame(WIDTH, HEIGHT);
 	public FroggerGameRunner() {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
@@ -46,12 +48,13 @@ public class FroggerGameRunner {
 
 	private void start() {
 		JFrame frame = new JFrame("Frogger");
+		System.out.println("width is " + WIDTH + " height is " + HEIGHT);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		panel = new JPanel() {
 			@Override
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				drawGame(g, WIDTH, HEIGHT);
+				drawGame(g);
 			}
 		};
 		panel.setBackground(new Color(20, 15, 120));
@@ -80,6 +83,7 @@ public class FroggerGameRunner {
 		ticks++;// keeps track of the number of times the timer has gone off
 		if(ticks %100 == 0) {
 			System.out.println(ticks/100+" seconds");
+			game.move();
 		}
 
 		
@@ -144,8 +148,8 @@ public class FroggerGameRunner {
 		game.keyHit(s);
 		panel.repaint();
 	}
-	protected void drawGame(Graphics g, int width, int height) {
-		game.draw(g,width,height);
+	protected void drawGame(Graphics g) {
+		game.draw(g);
 
 	}
 
